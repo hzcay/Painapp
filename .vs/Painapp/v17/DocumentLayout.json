@@ -5,10 +5,6 @@
     {
       "AbsoluteMoniker": "D:0:0:{8AFB6847-EEF5-4556-AAD2-E136707E353C}|Painapp\\Painapp.csproj|d:\\giuaki-winform\\painapp\\painapp\\form1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
       "RelativeMoniker": "D:0:0:{8AFB6847-EEF5-4556-AAD2-E136707E353C}|Painapp\\Painapp.csproj|solutionrelative:painapp\\form1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{8AFB6847-EEF5-4556-AAD2-E136707E353C}|Painapp\\Painapp.csproj|D:\\giuaki-winform\\Painapp\\painapp\\form1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{8AFB6847-EEF5-4556-AAD2-E136707E353C}|Painapp\\Painapp.csproj|solutionrelative:painapp\\form1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -18,22 +14,8 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 1,
+          "SelectedChildIndex": 0,
           "Children": [
-            {
-              "$type": "Document",
-              "DocumentIndex": 1,
-              "Title": "Form1.cs",
-              "DocumentMoniker": "D:\\giuaki-winform\\Painapp\\Painapp\\Form1.cs",
-              "RelativeDocumentMoniker": "Painapp\\Form1.cs",
-              "ToolTip": "D:\\giuaki-winform\\Painapp\\Painapp\\Form1.cs",
-              "RelativeToolTip": "Painapp\\Form1.cs",
-              "ViewState": "AgIAAGMAAAAAAAAAAAAkwG4AAAAQAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-03-11T08:41:37.314Z",
-              "IsPinned": true,
-              "EditorCaption": ""
-            },
             {
               "$type": "Document",
               "DocumentIndex": 0,

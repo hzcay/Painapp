@@ -30,7 +30,7 @@
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
-            Bunifu.UI.WinForms.BunifuButton.BunifuButton.BorderEdges borderEdges2 = new Bunifu.UI.WinForms.BunifuButton.BunifuButton.BorderEdges();
+            Bunifu.UI.WinForms.BunifuButton.BunifuButton.BorderEdges borderEdges1 = new Bunifu.UI.WinForms.BunifuButton.BunifuButton.BorderEdges();
             this.Menutask = new Bunifu.UI.WinForms.BunifuPanel();
             this.btnexit = new Bunifu.UI.WinForms.BunifuButton.BunifuButton();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
@@ -44,11 +44,10 @@
             this.txtcolor = new Bunifu.UI.WinForms.BunifuLabel();
             this.curcolorPen = new Bunifu.UI.WinForms.BunifuPictureBox();
             this.tooltask = new Bunifu.UI.WinForms.BunifuPanel();
+            this.btnClear = new Bunifu.UI.WinForms.BunifuImageButton();
             this.bunifuImageButton1 = new Bunifu.UI.WinForms.BunifuImageButton();
-            this.btnselect = new Bunifu.UI.WinForms.BunifuImageButton();
             this.btnerase = new Bunifu.UI.WinForms.BunifuImageButton();
             this.btnfill = new Bunifu.UI.WinForms.BunifuImageButton();
-            this.btnbrush = new Bunifu.UI.WinForms.BunifuImageButton();
             this.btnPen = new Bunifu.UI.WinForms.BunifuImageButton();
             this.adjusttask = new Bunifu.UI.WinForms.BunifuPanel();
             this.colorchanging = new Bunifu.UI.WinForms.BunifuImageButton();
@@ -84,7 +83,6 @@
             this.bunifuElipse1 = new Bunifu.Framework.UI.BunifuElipse(this.components);
             this.colorsetting = new System.Windows.Forms.ColorDialog();
             this.bunifuElipse2 = new Bunifu.Framework.UI.BunifuElipse(this.components);
-            this.btnClear = new Bunifu.UI.WinForms.BunifuImageButton();
             this.Menutask.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.Statustask.SuspendLayout();
@@ -133,11 +131,11 @@
             this.btnexit.ColorContrastOnClick = 45;
             this.btnexit.ColorContrastOnHover = 45;
             this.btnexit.Cursor = System.Windows.Forms.Cursors.Default;
-            borderEdges2.BottomLeft = true;
-            borderEdges2.BottomRight = true;
-            borderEdges2.TopLeft = true;
-            borderEdges2.TopRight = true;
-            this.btnexit.CustomizableEdges = borderEdges2;
+            borderEdges1.BottomLeft = true;
+            borderEdges1.BottomRight = true;
+            borderEdges1.TopLeft = true;
+            borderEdges1.TopRight = true;
+            this.btnexit.CustomizableEdges = borderEdges1;
             this.btnexit.DialogResult = System.Windows.Forms.DialogResult.None;
             this.btnexit.DisabledBorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(24)))), ((int)(((byte)(33)))), ((int)(((byte)(47)))));
             this.btnexit.DisabledFillColor = System.Drawing.Color.FromArgb(((int)(((byte)(24)))), ((int)(((byte)(33)))), ((int)(((byte)(47)))));
@@ -429,16 +427,49 @@
             this.tooltask.BorderThickness = 1;
             this.tooltask.Controls.Add(this.btnClear);
             this.tooltask.Controls.Add(this.bunifuImageButton1);
-            this.tooltask.Controls.Add(this.btnselect);
             this.tooltask.Controls.Add(this.btnerase);
             this.tooltask.Controls.Add(this.btnfill);
-            this.tooltask.Controls.Add(this.btnbrush);
             this.tooltask.Controls.Add(this.btnPen);
             this.tooltask.Location = new System.Drawing.Point(-1, 32);
             this.tooltask.Name = "tooltask";
             this.tooltask.ShowBorders = true;
             this.tooltask.Size = new System.Drawing.Size(40, 485);
             this.tooltask.TabIndex = 2;
+            // 
+            // btnClear
+            // 
+            this.btnClear.ActiveImage = null;
+            this.btnClear.AllowAnimations = true;
+            this.btnClear.AllowBuffering = false;
+            this.btnClear.AllowToggling = false;
+            this.btnClear.AllowZooming = true;
+            this.btnClear.AllowZoomingOnFocus = false;
+            this.btnClear.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(21)))), ((int)(((byte)(29)))), ((int)(((byte)(44)))));
+            this.btnClear.DialogResult = System.Windows.Forms.DialogResult.None;
+            this.btnClear.ErrorImage = ((System.Drawing.Image)(resources.GetObject("btnClear.ErrorImage")));
+            this.btnClear.FadeWhenInactive = false;
+            this.btnClear.Flip = Bunifu.UI.WinForms.BunifuImageButton.FlipOrientation.Normal;
+            this.btnClear.Image = ((System.Drawing.Image)(resources.GetObject("btnClear.Image")));
+            this.btnClear.ImageActive = null;
+            this.btnClear.ImageLocation = null;
+            this.btnClear.ImageMargin = 0;
+            this.btnClear.ImageSize = new System.Drawing.Size(27, 27);
+            this.btnClear.ImageZoomSize = new System.Drawing.Size(28, 28);
+            this.btnClear.InitialImage = ((System.Drawing.Image)(resources.GetObject("btnClear.InitialImage")));
+            this.btnClear.Location = new System.Drawing.Point(6, 161);
+            this.btnClear.Name = "btnClear";
+            this.btnClear.Rotation = 0;
+            this.btnClear.ShowActiveImage = true;
+            this.btnClear.ShowCursorChanges = true;
+            this.btnClear.ShowImageBorders = true;
+            this.btnClear.ShowSizeMarkers = false;
+            this.btnClear.Size = new System.Drawing.Size(28, 28);
+            this.btnClear.TabIndex = 12;
+            this.btnClear.ToolTipText = "";
+            this.btnClear.WaitOnLoad = false;
+            this.btnClear.Zoom = 0;
+            this.btnClear.ZoomSpeed = 10;
+            this.btnClear.Click += new System.EventHandler(this.btnClear_Click);
             // 
             // bunifuImageButton1
             // 
@@ -475,40 +506,6 @@
             this.bunifuImageButton1.ZoomSpeed = 10;
             this.bunifuImageButton1.Click += new System.EventHandler(this.bunifuImageButton1_Click);
             // 
-            // btnselect
-            // 
-            this.btnselect.ActiveImage = null;
-            this.btnselect.AllowAnimations = true;
-            this.btnselect.AllowBuffering = false;
-            this.btnselect.AllowToggling = false;
-            this.btnselect.AllowZooming = true;
-            this.btnselect.AllowZoomingOnFocus = false;
-            this.btnselect.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(21)))), ((int)(((byte)(29)))), ((int)(((byte)(44)))));
-            this.btnselect.DialogResult = System.Windows.Forms.DialogResult.None;
-            this.btnselect.ErrorImage = ((System.Drawing.Image)(resources.GetObject("btnselect.ErrorImage")));
-            this.btnselect.FadeWhenInactive = false;
-            this.btnselect.Flip = Bunifu.UI.WinForms.BunifuImageButton.FlipOrientation.Normal;
-            this.btnselect.Image = ((System.Drawing.Image)(resources.GetObject("btnselect.Image")));
-            this.btnselect.ImageActive = null;
-            this.btnselect.ImageLocation = null;
-            this.btnselect.ImageMargin = 0;
-            this.btnselect.ImageSize = new System.Drawing.Size(27, 27);
-            this.btnselect.ImageZoomSize = new System.Drawing.Size(28, 28);
-            this.btnselect.InitialImage = ((System.Drawing.Image)(resources.GetObject("btnselect.InitialImage")));
-            this.btnselect.Location = new System.Drawing.Point(6, 197);
-            this.btnselect.Name = "btnselect";
-            this.btnselect.Rotation = 0;
-            this.btnselect.ShowActiveImage = true;
-            this.btnselect.ShowCursorChanges = true;
-            this.btnselect.ShowImageBorders = true;
-            this.btnselect.ShowSizeMarkers = false;
-            this.btnselect.Size = new System.Drawing.Size(28, 28);
-            this.btnselect.TabIndex = 10;
-            this.btnselect.ToolTipText = "";
-            this.btnselect.WaitOnLoad = false;
-            this.btnselect.Zoom = 0;
-            this.btnselect.ZoomSpeed = 10;
-            // 
             // btnerase
             // 
             this.btnerase.ActiveImage = null;
@@ -529,7 +526,7 @@
             this.btnerase.ImageSize = new System.Drawing.Size(27, 27);
             this.btnerase.ImageZoomSize = new System.Drawing.Size(28, 28);
             this.btnerase.InitialImage = ((System.Drawing.Image)(resources.GetObject("btnerase.InitialImage")));
-            this.btnerase.Location = new System.Drawing.Point(6, 161);
+            this.btnerase.Location = new System.Drawing.Point(6, 125);
             this.btnerase.Name = "btnerase";
             this.btnerase.Rotation = 0;
             this.btnerase.ShowActiveImage = true;
@@ -564,7 +561,7 @@
             this.btnfill.ImageSize = new System.Drawing.Size(27, 27);
             this.btnfill.ImageZoomSize = new System.Drawing.Size(28, 28);
             this.btnfill.InitialImage = ((System.Drawing.Image)(resources.GetObject("btnfill.InitialImage")));
-            this.btnfill.Location = new System.Drawing.Point(6, 125);
+            this.btnfill.Location = new System.Drawing.Point(6, 89);
             this.btnfill.Name = "btnfill";
             this.btnfill.Rotation = 0;
             this.btnfill.ShowActiveImage = true;
@@ -578,40 +575,6 @@
             this.btnfill.Zoom = 0;
             this.btnfill.ZoomSpeed = 10;
             this.btnfill.Click += new System.EventHandler(this.btnfill_Click);
-            // 
-            // btnbrush
-            // 
-            this.btnbrush.ActiveImage = null;
-            this.btnbrush.AllowAnimations = true;
-            this.btnbrush.AllowBuffering = false;
-            this.btnbrush.AllowToggling = false;
-            this.btnbrush.AllowZooming = true;
-            this.btnbrush.AllowZoomingOnFocus = false;
-            this.btnbrush.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(21)))), ((int)(((byte)(29)))), ((int)(((byte)(44)))));
-            this.btnbrush.DialogResult = System.Windows.Forms.DialogResult.None;
-            this.btnbrush.ErrorImage = ((System.Drawing.Image)(resources.GetObject("btnbrush.ErrorImage")));
-            this.btnbrush.FadeWhenInactive = false;
-            this.btnbrush.Flip = Bunifu.UI.WinForms.BunifuImageButton.FlipOrientation.Normal;
-            this.btnbrush.Image = ((System.Drawing.Image)(resources.GetObject("btnbrush.Image")));
-            this.btnbrush.ImageActive = null;
-            this.btnbrush.ImageLocation = null;
-            this.btnbrush.ImageMargin = 0;
-            this.btnbrush.ImageSize = new System.Drawing.Size(27, 27);
-            this.btnbrush.ImageZoomSize = new System.Drawing.Size(28, 28);
-            this.btnbrush.InitialImage = ((System.Drawing.Image)(resources.GetObject("btnbrush.InitialImage")));
-            this.btnbrush.Location = new System.Drawing.Point(6, 89);
-            this.btnbrush.Name = "btnbrush";
-            this.btnbrush.Rotation = 0;
-            this.btnbrush.ShowActiveImage = true;
-            this.btnbrush.ShowCursorChanges = true;
-            this.btnbrush.ShowImageBorders = true;
-            this.btnbrush.ShowSizeMarkers = false;
-            this.btnbrush.Size = new System.Drawing.Size(28, 28);
-            this.btnbrush.TabIndex = 6;
-            this.btnbrush.ToolTipText = "";
-            this.btnbrush.WaitOnLoad = false;
-            this.btnbrush.Zoom = 0;
-            this.btnbrush.ZoomSpeed = 10;
             // 
             // btnPen
             // 
@@ -1657,41 +1620,6 @@
             this.bunifuElipse2.ElipseRadius = 7;
             this.bunifuElipse2.TargetControl = this.colorchanging;
             // 
-            // btnClear
-            // 
-            this.btnClear.ActiveImage = null;
-            this.btnClear.AllowAnimations = true;
-            this.btnClear.AllowBuffering = false;
-            this.btnClear.AllowToggling = false;
-            this.btnClear.AllowZooming = true;
-            this.btnClear.AllowZoomingOnFocus = false;
-            this.btnClear.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(21)))), ((int)(((byte)(29)))), ((int)(((byte)(44)))));
-            this.btnClear.DialogResult = System.Windows.Forms.DialogResult.None;
-            this.btnClear.ErrorImage = ((System.Drawing.Image)(resources.GetObject("btnClear.ErrorImage")));
-            this.btnClear.FadeWhenInactive = false;
-            this.btnClear.Flip = Bunifu.UI.WinForms.BunifuImageButton.FlipOrientation.Normal;
-            this.btnClear.Image = ((System.Drawing.Image)(resources.GetObject("btnClear.Image")));
-            this.btnClear.ImageActive = null;
-            this.btnClear.ImageLocation = null;
-            this.btnClear.ImageMargin = 0;
-            this.btnClear.ImageSize = new System.Drawing.Size(27, 27);
-            this.btnClear.ImageZoomSize = new System.Drawing.Size(28, 28);
-            this.btnClear.InitialImage = ((System.Drawing.Image)(resources.GetObject("btnClear.InitialImage")));
-            this.btnClear.Location = new System.Drawing.Point(6, 233);
-            this.btnClear.Name = "btnClear";
-            this.btnClear.Rotation = 0;
-            this.btnClear.ShowActiveImage = true;
-            this.btnClear.ShowCursorChanges = true;
-            this.btnClear.ShowImageBorders = true;
-            this.btnClear.ShowSizeMarkers = false;
-            this.btnClear.Size = new System.Drawing.Size(28, 28);
-            this.btnClear.TabIndex = 12;
-            this.btnClear.ToolTipText = "";
-            this.btnClear.WaitOnLoad = false;
-            this.btnClear.Zoom = 0;
-            this.btnClear.ZoomSpeed = 10;
-            this.btnClear.Click += new System.EventHandler(this.btnClear_Click);
-            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1708,6 +1636,7 @@
             this.Name = "Form1";
             this.Text = "Form1";
             this.Load += new System.EventHandler(this.Form1_Load);
+            this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.Form1_KeyDown);
             this.Menutask.ResumeLayout(false);
             this.Menutask.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
@@ -1735,10 +1664,8 @@
         private Bunifu.Framework.UI.BunifuElipse bunifuElipse1;
         private Bunifu.UI.WinForms.BunifuButton.BunifuButton btnexit;
         private Bunifu.UI.WinForms.BunifuImageButton btnPen;
-        private Bunifu.UI.WinForms.BunifuImageButton btnbrush;
         private Bunifu.UI.WinForms.BunifuImageButton btnfill;
         private Bunifu.UI.WinForms.BunifuImageButton btnerase;
-        private Bunifu.UI.WinForms.BunifuImageButton btnselect;
         private System.Windows.Forms.Label label1;
         private Bunifu.UI.WinForms.BunifuImageButton btn1;
         private Bunifu.UI.WinForms.BunifuImageButton btn12;

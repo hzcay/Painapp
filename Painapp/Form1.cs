@@ -16,7 +16,6 @@ namespace Painapp
 {
     public partial class Form1 : Form
     {
-
         Graphics gp;
 
         Color myPenColor = Color.Red;
@@ -26,8 +25,8 @@ namespace Painapp
         Brush CurBrush = new SolidBrush(Color.Red);
         Color color2 = Color.Blue;
 
-
         bool isFill = false;
+        bool isSelectionMode = false;
 
         bool bLine = false;
         bool bEllipse = false;
@@ -41,7 +40,7 @@ namespace Painapp
         clsComplexobject lstObject = new clsComplexobject();
         private clsDrawObject currentObject = null;
 
-        private clsDrawObject selectedObject = null;
+        private List<clsDrawObject> selectedObjects = new List<clsDrawObject>();
         private Point offset;
         private bool isMove = false;
 
@@ -51,12 +50,17 @@ namespace Painapp
         {
             InitializeComponent();
             gp = this.canvas.CreateGraphics();
+            
+            // Enable KeyPreview to capture key events at the form level
+            this.KeyPreview = true;
         }
 
         private void Form1_Load(object sender, EventArgs e)
         {
             curcolorPen.Image = null;
             curcolorBrush.Image = null;
+            cbxdrawingstyle.SelectedIndex = 0;
+            cbxbrushstyle.SelectedIndex = 0;
         }
 
         private void btnexit_Click(object sender, EventArgs e)
@@ -103,12 +107,10 @@ namespace Painapp
         private void btnPen_Click(object sender, EventArgs e)
         {
             this.isFill = false;
-            this.Cursor = new Cursor("D:\\giuaki-winform\\Painapp\\Painapp\\Resources\\pencil.ico");
         }
         private void btnfill_Click(object sender, EventArgs e)
         {
             this.isFill = true;
-            this.Cursor = new Cursor("D:\\giuaki-winform\\Painapp\\Painapp\\Resources\\color.ico");
         }
         private void btnTriangle_Click(object sender, EventArgs e)
         {
@@ -127,105 +129,157 @@ namespace Painapp
         {
             this.isPress = true;
 
-            if (this.bLine) 
+            if (isSelectionMode)
             {
-                clsLine myLine = new clsLine();
-                setobject(myLine, e);
+                clsDrawObject obj = lstObject.FindObjectAt(e.Location);
+                bool ctrlPressed = (ModifierKeys & Keys.Control) == Keys.Control;
+                
+                if (obj != null)
+                {
+                   
+                    if (selectedObjects.Contains(obj) && !ctrlPressed)
+                    {
+                        
+                        isMove = true;
+                        offset = new Point(e.X - obj.Bounds.X, e.Y - obj.Bounds.Y);
+                        lstObject.BringToFront(obj);
+                    }
+                    else
+                    {
+                       
+                        if (!ctrlPressed)
+                        {
+                            
+                            if (!selectedObjects.Contains(obj))
+                            {
+                                foreach (var selected in selectedObjects)
+                                {
+                                    selected.isSelected = false;
+                                }
+                                selectedObjects.Clear();
+                            }
+                        }
+                        
+          
+                        if (selectedObjects.Contains(obj) && ctrlPressed)
+                        {
+                            obj.isSelected = false;
+                            selectedObjects.Remove(obj);
+                        }
+                        else
+                        {
+                            obj.isSelected = true;
+                            selectedObjects.Add(obj);
+                            lstObject.BringToFront(obj);
+                        }
+                        
+                        if (selectedObjects.Count > 0)
+                        {
+                            isMove = true;
+                            offset = new Point(e.X - obj.Bounds.X, e.Y - obj.Bounds.Y);
+                        }
+                    }
+                }
+                else if (!ctrlPressed)
+                {
+                    // Clicked on empty space without Ctrl - clear all selections
+                    foreach (var selected in selectedObjects)
+                    {
+                        selected.isSelected = false;
+                    }
+                    selectedObjects.Clear();
+                    isMove = false;
+                }
+                
+                this.canvas.Invalidate();
+                return;
             }
-            if (this.bEllipse)
+
+            clsDrawObject drawObject = null;
+            
+            if (this.bLine) drawObject = new clsLine();
+            else if (this.bEllipse) drawObject = new clsEllipse();
+            else if (this.bRectangle) drawObject = new clsRectangle();
+            else if (this.bSquare) drawObject = new clsSquare();
+            else if (this.bCircle) drawObject = new clsCircle();
+            else if (this.bCurve) drawObject = new clsCurve();
+            else if (this.bPolygon) drawObject = new clsPolygon();
+            else if (this.bTriangle) drawObject = new clsTriangle();
+            
+            if (drawObject != null)
             {
-                clsEllipse myEllipse = new clsEllipse();
-                setobject(myEllipse, e);
-            }
-            if (this.bRectangle)
-            {
-                clsRectangle myRectangle = new clsRectangle();
-                setobject(myRectangle, e);
-            }
-            if (this.bSquare)
-            {
-                clsSquare mySquare = new clsSquare();
-                setobject(mySquare, e);
-            }
-            if (this.bCircle)
-            {
-                clsCircle myCircle = new clsCircle();
-                setobject(myCircle, e);
-            }
-            if (this.bCurve)
-            {
-                clsCurve myCurve = new clsCurve();
-                setobject(myCurve, e);
-            }
-            if (this.bPolygon)
-            {
-                clsPolygon myPolygon = new clsPolygon();
-                setobject(myPolygon, e);
-            }
-            if (this.bTriangle)
-            {
-                clsTriangle myTriangle = new clsTriangle();
-                setobject(myTriangle, e);
+                setobject(drawObject, e);
             }
         }
 
         private void canvas_MouseMove(object sender, MouseEventArgs e)
         {
-            if (this.isPress && this.currentObject != null)
+            if (this.isPress)
             {
-                if (this.currentObject is clsLine line)
+                if (isSelectionMode && selectedObjects.Count > 0 && isMove)
                 {
-                    line.p2 = e.Location;
+                    int deltaX = 0;
+                    int deltaY = 0;
+                    
+                
+                    if (selectedObjects.Count > 0)
+                    {
+                        var firstObj = selectedObjects[0];
+                        deltaX = e.X - (firstObj.Bounds.X + offset.X);
+                        deltaY = e.Y - (firstObj.Bounds.Y + offset.Y);
+                    }
+                    
+                
+                    if (deltaX != 0 || deltaY != 0)
+                    {
+        
+                        foreach (var obj in selectedObjects)
+                        {
+                            obj.Move(deltaX, deltaY);
+                        }
+                        this.canvas.Invalidate();
+                    }
+                    return;
+                }
+                
+                if (this.currentObject != null)
+                {
+                    this.currentObject.p2 = e.Location;
                     this.canvas.Invalidate();
                 }
-                if (this.currentObject is clsEllipse ellipse)
+            }
+            else if (isSelectionMode)
+            {
+                clsDrawObject obj = lstObject.FindObjectAt(e.Location);
+                if (obj != null)
                 {
-                    ellipse.p2 = e.Location;
-                    this.canvas.Invalidate();
+                    this.canvas.Cursor = Cursors.SizeAll;
                 }
-                if (this.currentObject is clsRectangle rectangle)
+                else
                 {
-                    rectangle.p2 = e.Location;
-                    this.canvas.Invalidate();
-                }
-                if (this.currentObject is clsSquare square)
-                {
-                    square.p2 = e.Location;
-                    this.canvas.Invalidate();
-                }
-                if (this.currentObject is clsCircle circle)
-                {
-                    circle.p2 = e.Location;
-                    this.canvas.Invalidate();
-                }
-                if (this.currentObject is clsCurve curve)
-                {
-                    curve.p2 = e.Location;
-                    this.canvas.Invalidate();
-                }
-                if (this.currentObject is clsPolygon polygon)
-                {
-                    polygon.p2 = e.Location;
-                    this.canvas.Invalidate();
-                }
-                if (this.currentObject is clsTriangle triangle)
-                {
-                    triangle.p2 = e.Location;
-                    this.canvas.Invalidate();
+                    this.canvas.Cursor = Cursors.Default;
                 }
             }
         }
 
         private void canvas_MouseUp(object sender, MouseEventArgs e)
         {
-            this.isPress = false;
-            this.currentObject = null; 
-            this.canvas.Invalidate();
+            if (isSelectionMode)
+            {
+                isMove = false;
+                this.isPress = false;
+                return;
+            }
+            
+            if (this.currentObject != null)
+            {
+                this.currentObject = null;
+                this.isPress = false;
+                this.canvas.Invalidate();
+            }
         }
 
         private void setup() {
-            this.isPress = false;
-            this.currentObject = null;
             this.bLine = false;
             this.bEllipse = false;
             this.bRectangle = false;
@@ -234,6 +288,15 @@ namespace Painapp
             this.bCurve = false;
             this.bPolygon = false;
             this.bTriangle = false;
+            this.isSelectionMode = false; 
+            this.currentObject = null;
+            this.Cursor = Cursors.Default;
+            
+            foreach (var obj in selectedObjects)
+            {
+                obj.isSelected = false;
+            }
+            selectedObjects.Clear();
             this.canvas.Invalidate();
         }
         private void setobject(clsDrawObject mydraw, MouseEventArgs e)
@@ -335,7 +398,9 @@ namespace Painapp
         private void bunifuImageButton1_Click(object sender, EventArgs e)
         {
             setup();
-            this.Cursor = Cursors.Default;
+            this.isSelectionMode = true;
+            this.canvas.Cursor = Cursors.Default;
+            this.canvas.Invalidate();
         }
 
         private void btnerase_Click(object sender, EventArgs e)
@@ -437,5 +502,24 @@ namespace Painapp
             lstObject.RemoveAll();
             this.canvas.Invalidate();
         }
+
+        private void Form1_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Delete && isSelectionMode && selectedObjects.Count > 0)
+            {
+
+                foreach (var obj in selectedObjects.ToList())
+                {
+                    lstObject.RemoveObject(obj);
+                }
+
+                selectedObjects.Clear();
+
+                this.canvas.Invalidate();
+
+                e.Handled = true;
+            }
+        }
+
     }
 }
