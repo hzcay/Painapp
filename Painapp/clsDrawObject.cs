@@ -33,7 +33,7 @@ namespace Painapp
             }
         }
 
-        public void Move(int deltaX, int deltaY)
+        public virtual void Move(int deltaX, int deltaY)
         {
             p1.X += deltaX;
             p1.Y += deltaY;
@@ -41,20 +41,61 @@ namespace Painapp
             p2.Y += deltaY;
         }
 
+        public virtual void Resize(int handleIndex, Point to)
+        {
+            Rectangle bounds = Bounds;
+            int left = bounds.Left;
+            int top = bounds.Top;
+            int right = bounds.Right;
+            int bottom = bounds.Bottom;
+            switch (handleIndex)
+            {
+                case 0:
+                    left = to.X; top = to.Y;
+                    break;
+                case 1:
+                    right = to.X; top = to.Y;
+                    break;
+                case 2: 
+                    right = to.X; bottom = to.Y;
+                    break;
+                case 3: 
+                    left = to.X; bottom = to.Y;
+                    break;
+                case 4:
+                    top = to.Y;
+                    break;
+                case 5: 
+                    right = to.X;
+                    break;
+                case 6:
+                    bottom = to.Y;
+                    break;
+                case 7:
+                    left = to.X;
+                    break;
+            }
+            p1 = new Point(left, top);
+            p2 = new Point(right, bottom);
+        }
+
+        public static int HandleSize => 7;
+        public virtual Point[] HandlePoints => GetHandlePoints(Bounds);
 
         protected Point[] GetHandlePoints(Rectangle bounds)
         {
             return new Point[]
             {
-                new Point(bounds.Left, bounds.Top),
-                new Point(bounds.Right, bounds.Top),
-                new Point(bounds.Left, bounds.Bottom),
+   
+                new Point(bounds.Left, bounds.Top),      
+                new Point(bounds.Right, bounds.Top),     
                 new Point(bounds.Right, bounds.Bottom),
-                new Point(bounds.Left, bounds.Top + bounds.Height / 2),
+                new Point(bounds.Left, bounds.Bottom),
+
                 new Point(bounds.Left + bounds.Width / 2, bounds.Top),
                 new Point(bounds.Right, bounds.Top + bounds.Height / 2),
-                new Point(bounds.Left + bounds.Width / 2, bounds.Bottom),
-                new Point(bounds.Left + bounds.Width / 2, bounds.Top + bounds.Height)
+                new Point(bounds.Left + bounds.Width / 2, bounds.Bottom), 
+                new Point(bounds.Left, bounds.Top + bounds.Height / 2)
             };
         }
         
@@ -63,9 +104,9 @@ namespace Painapp
             if (bounds.Width <= 0 || bounds.Height <= 0) return;
             
             Point[] handlePoints = GetHandlePoints(bounds);
-            int handleSize = 7;
+            int handleSize = HandleSize;
             
-            for (int i = 0; i < handlePoints.Length - 1; i++)
+            for (int i = 0; i < handlePoints.Length; i++)
             {
                 var point = handlePoints[i];
                 Rectangle handleRect = new Rectangle(
@@ -77,7 +118,6 @@ namespace Painapp
                 g.FillEllipse(Brushes.White, handleRect);
                 g.DrawEllipse(new Pen(Color.DodgerBlue, 1.5f), handleRect);
             }
-            
         }
 
         public virtual void DrawSelection(Graphics g)
@@ -123,25 +163,25 @@ namespace Painapp
         }
 
         public void RemoveObject(clsDrawObject obj)
-    {
-        if (obj != null && lstObject.Contains(obj))
         {
-            lstObject.Remove(obj);
-        }
-    }
-
-    public void RemoveObjects(IEnumerable<clsDrawObject> objects)
-    {
-        if (objects == null) return;
-        
-        foreach (var obj in objects.ToList())
-        {
-            if (lstObject.Contains(obj))
+            if (obj != null && lstObject.Contains(obj))
             {
                 lstObject.Remove(obj);
             }
         }
-    }
+
+        public void RemoveObjects(IEnumerable<clsDrawObject> objects)
+        {
+            if (objects == null) return;
+            
+            foreach (var obj in objects.ToList())
+            {
+                if (lstObject.Contains(obj))
+                {
+                    lstObject.Remove(obj);
+                }
+            }
+        }
         
         public override bool Contains(Point p)
         {
@@ -196,10 +236,36 @@ namespace Painapp
                 return new Rectangle(minX, minY, maxX - minX, maxY - minY);
             }
         }
+
+        public override void Move(int deltaX, int deltaY)
+        {
+            foreach (var obj in lstObject)
+                obj.Move(deltaX, deltaY);
+        }
     }
 
     public class clsLine : clsDrawObject
     {
+        public override Point[] HandlePoints => new Point[] { p1, p2 };
+
+        public override void DrawSelection(Graphics g)
+        {
+            if (!isSelected) return;
+            using (Pen selPen = new Pen(Color.DodgerBlue, 1.5f))
+            {
+                selPen.DashStyle = DashStyle.Dash;
+                selPen.DashPattern = new float[] { 3, 3 };
+                g.DrawLine(selPen, p1, p2);
+            }
+            int hs = HandleSize;
+            foreach (Point pt in new[] { p1, p2 })
+            {
+                Rectangle rect = new Rectangle(pt.X - hs / 2, pt.Y - hs / 2, hs, hs);
+                g.FillEllipse(Brushes.White, rect);
+                g.DrawEllipse(new Pen(Color.DodgerBlue, 1.5f), rect);
+            }
+        }
+
         public override void Draw(Graphics myGp)
         {
             myGp.DrawLine(myPen, p1, p2);
@@ -221,6 +287,14 @@ namespace Painapp
             }
             
             return false;
+        }
+
+        public override void Resize(int handleIndex, Point to)
+        {
+            if (handleIndex == 0)
+                p1 = to;
+            else if (handleIndex == 1)
+                p2 = to;
         }
     }
 
@@ -331,6 +405,66 @@ namespace Painapp
                 return GetSquareRect();
             }
         }
+
+        public override Point[] HandlePoints
+        {
+            get
+            {
+                var rect = GetSquareRect();
+                return new Point[]
+                {
+                    new Point(rect.Left, rect.Top),      
+                    new Point(rect.Right, rect.Top),      
+                    new Point(rect.Right, rect.Bottom),   
+                    new Point(rect.Left, rect.Bottom)    
+                };
+            }
+        }
+
+        public override void Resize(int handleIndex, Point to)
+        {
+            Rectangle rect = GetSquareRect();
+            int left = rect.Left, top = rect.Top;
+            int right = rect.Right, bottom = rect.Bottom;
+            switch (handleIndex)
+            {
+                case 0:
+                    left = to.X; top = to.Y; break;
+                case 1:
+                    right = to.X; top = to.Y; break;
+                case 2:
+                    right = to.X; bottom = to.Y; break;
+                case 3:
+                    left = to.X; bottom = to.Y; break;
+                default:
+                    return;
+            }
+            int width = right - left;
+            int height = bottom - top;
+            int size = Math.Min(Math.Abs(width), Math.Abs(height));
+            bool invW = width < 0, invH = height < 0;
+            switch (handleIndex)
+            {
+                case 0:
+                    left = right - (invW ? -size : size);
+                    top = bottom - (invH ? -size : size);
+                    break;
+                case 1:
+                    right = left + (invW ? -size : size);
+                    top = bottom - (invH ? -size : size);
+                    break;
+                case 2:
+                    right = left + (invW ? -size : size);
+                    bottom = top + (invH ? -size : size);
+                    break;
+                case 3:
+                    left = right - (invW ? -size : size);
+                    bottom = top + (invH ? -size : size);
+                    break;
+            }
+            p1 = new Point(left, top);
+            p2 = new Point(right, bottom);
+        }
     }
     
 
@@ -398,16 +532,119 @@ namespace Painapp
                 return GetCircleRect();
             }
         }
+
+        public override Point[] HandlePoints
+        {
+            get
+            {
+                var rect = GetCircleRect();
+                return new Point[]
+                {
+                    new Point(rect.Left, rect.Top),
+                    new Point(rect.Right, rect.Top),
+                    new Point(rect.Right, rect.Bottom),
+                    new Point(rect.Left, rect.Bottom)
+                };
+            }
+        }
+
+        public override void Resize(int handleIndex, Point to)
+        {
+            Rectangle rect = GetCircleRect();
+            int left = rect.Left, top = rect.Top;
+            int right = rect.Right, bottom = rect.Bottom;
+            switch (handleIndex)
+            {
+                case 0: left = to.X; top = to.Y; break;
+                case 1: right = to.X; top = to.Y; break;
+                case 2: right = to.X; bottom = to.Y; break;
+                case 3: left = to.X; bottom = to.Y; break;
+                default: return; 
+            }
+            int width = right - left;
+            int height = bottom - top;
+            int size = Math.Min(Math.Abs(width), Math.Abs(height));
+            bool invW = width < 0, invH = height < 0;
+            switch (handleIndex)
+            {
+                case 0:
+                    left = right - (invW ? -size : size);
+                    top = bottom - (invH ? -size : size);
+                    break;
+                case 1:
+                    right = left + (invW ? -size : size);
+                    top = bottom - (invH ? -size : size);
+                    break;
+                case 2:
+                    right = left + (invW ? -size : size);
+                    bottom = top + (invH ? -size : size);
+                    break;
+                case 3:
+                    left = right - (invW ? -size : size);
+                    bottom = top + (invH ? -size : size);
+                    break;
+            }
+            p1 = new Point(left, top);
+            p2 = new Point(left + size * (invW ? -1 : 1), top + size * (invH ? -1 : 1));
+        }
+
+        public override void DrawSelection(Graphics g)
+        {
+            if (!isSelected) return;
+            Rectangle bounds = Bounds;
+            using (Pen selPen = new Pen(Color.DodgerBlue, 1.5f))
+            {
+                selPen.DashStyle = DashStyle.Dash;
+                selPen.DashPattern = new float[] { 3, 3 };
+                g.DrawRectangle(selPen, bounds);
+            }
+            int hs = HandleSize;
+            foreach (var pt in HandlePoints)
+            {
+                Rectangle r = new Rectangle(pt.X - hs / 2, pt.Y - hs / 2, hs, hs);
+                g.FillEllipse(Brushes.White, r);
+                g.DrawEllipse(new Pen(Color.DodgerBlue, 1.5f), r);
+            }
+        }
     }
 
     public class clsCurve : clsDrawObject
     {
+        public override Point[] HandlePoints => new Point[] { p1, p2 };
+
+        public override void Resize(int handleIndex, Point to)
+        {
+            if (handleIndex == 0)
+                p1 = to;
+            else if (handleIndex == 1)
+                p2 = to;
+        }
+
         public override void Draw(Graphics myGp)
         { 
             if (p1.X == p2.X && p1.Y == p2.Y) return;
             
             Point p3 = new Point((p1.X + p2.X) / 2, p1.Y);
             myGp.DrawCurve(myPen, new Point[] { p1, p3, p2 });
+        }
+        
+        public override void DrawSelection(Graphics g)
+        {
+            if (!isSelected) return;
+            using (Pen selPen = new Pen(Color.DodgerBlue, 1.5f))
+            {
+                selPen.DashStyle = DashStyle.Dash;
+                selPen.DashPattern = new float[] { 3, 3 };
+                Point mid = new Point((p1.X + p2.X) / 2, p1.Y);
+                g.DrawCurve(selPen, new Point[] { p1, mid, p2 });
+            }
+            int hs = HandleSize;
+            foreach (Point pt in new[] { p1, p2 })
+            {
+                Rectangle rect = new Rectangle(pt.X - hs / 2, pt.Y - hs / 2, hs, hs);
+                g.FillEllipse(Brushes.White, rect);
+                g.DrawEllipse(new Pen(Color.DodgerBlue, 1.5f), rect);
+            }
         }
         
         public override bool Contains(Point point)

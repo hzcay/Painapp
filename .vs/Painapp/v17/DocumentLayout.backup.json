@@ -3,8 +3,12 @@
   "WorkspaceRootPath": "D:\\giuaki-winform\\Painapp\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{8AFB6847-EEF5-4556-AAD2-E136707E353C}|Painapp\\Painapp.csproj|d:\\giuaki-winform\\painapp\\painapp\\form1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
+      "AbsoluteMoniker": "D:0:0:{8AFB6847-EEF5-4556-AAD2-E136707E353C}|Painapp\\Painapp.csproj|D:\\giuaki-winform\\Painapp\\painapp\\form1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
       "RelativeMoniker": "D:0:0:{8AFB6847-EEF5-4556-AAD2-E136707E353C}|Painapp\\Painapp.csproj|solutionrelative:painapp\\form1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{8AFB6847-EEF5-4556-AAD2-E136707E353C}|Painapp\\Painapp.csproj|d:\\giuaki-winform\\painapp\\painapp\\clsdrawobject.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{8AFB6847-EEF5-4556-AAD2-E136707E353C}|Painapp\\Painapp.csproj|solutionrelative:painapp\\clsdrawobject.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -14,8 +18,21 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 0,
+          "SelectedChildIndex": 1,
           "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "clsDrawObject.cs",
+              "DocumentMoniker": "D:\\giuaki-winform\\Painapp\\Painapp\\clsDrawObject.cs",
+              "RelativeDocumentMoniker": "Painapp\\clsDrawObject.cs",
+              "ToolTip": "D:\\giuaki-winform\\Painapp\\Painapp\\clsDrawObject.cs",
+              "RelativeToolTip": "Painapp\\clsDrawObject.cs",
+              "ViewState": "AgIAAAgBAAAAAAAAAAAYwAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-04-22T20:44:00.518Z",
+              "EditorCaption": ""
+            },
             {
               "$type": "Document",
               "DocumentIndex": 0,
@@ -25,7 +42,7 @@
               "ToolTip": "D:\\giuaki-winform\\Painapp\\Painapp\\Form1.cs [Design]",
               "RelativeToolTip": "Painapp\\Form1.cs [Design]",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-03-11T01:17:55.768Z",
+              "WhenOpened": "2025-04-22T19:20:23.036Z",
               "EditorCaption": " [Design]"
             }
           ]

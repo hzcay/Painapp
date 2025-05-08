@@ -44,14 +44,16 @@ namespace Painapp
         private Point offset;
         private bool isMove = false;
 
+        private bool isResizing = false;
+        private int resizeHandleIndex = -1;
+        private clsDrawObject resizeObject = null;
+
         bool isPress = false;
 
         public Form1()
         {
             InitializeComponent();
             gp = this.canvas.CreateGraphics();
-            
-            // Enable KeyPreview to capture key events at the form level
             this.KeyPreview = true;
         }
 
@@ -131,6 +133,25 @@ namespace Painapp
 
             if (isSelectionMode)
             {
+              
+                foreach (var selectedObj in selectedObjects) 
+                {
+                    var handles = selectedObj.HandlePoints;
+                    for (int i = 0; i < handles.Length; i++)
+                    {
+                        var pt = handles[i];
+                        var rect = new Rectangle(pt.X - clsDrawObject.HandleSize / 2, pt.Y - clsDrawObject.HandleSize / 2,
+                                                 clsDrawObject.HandleSize, clsDrawObject.HandleSize);
+                        if (rect.Contains(e.Location))
+                        {
+                            isResizing = true;
+                            resizeObject = selectedObj;
+                            resizeHandleIndex = i;
+                            return;
+                        }
+                    }
+                }
+
                 clsDrawObject obj = lstObject.FindObjectAt(e.Location);
                 bool ctrlPressed = (ModifierKeys & Keys.Control) == Keys.Control;
                 
@@ -182,7 +203,6 @@ namespace Painapp
                 }
                 else if (!ctrlPressed)
                 {
-                    // Clicked on empty space without Ctrl - clear all selections
                     foreach (var selected in selectedObjects)
                     {
                         selected.isSelected = false;
@@ -241,6 +261,13 @@ namespace Painapp
                     }
                     return;
                 }
+
+                if (isResizing && resizeObject != null)
+                {
+                    resizeObject.Resize(resizeHandleIndex, e.Location);
+                    this.canvas.Invalidate();
+                    return;
+                }
                 
                 if (this.currentObject != null)
                 {
@@ -267,6 +294,9 @@ namespace Painapp
             if (isSelectionMode)
             {
                 isMove = false;
+                isResizing = false;
+                resizeObject = null;
+                resizeHandleIndex = -1;
                 this.isPress = false;
                 return;
             }
@@ -405,7 +435,15 @@ namespace Painapp
 
         private void btnerase_Click(object sender, EventArgs e)
         {
-            
+            if (selectedObjects.Count > 0)
+            {
+                foreach (var obj in selectedObjects.ToList())
+                {
+                    lstObject.RemoveObject(obj);
+                }
+                selectedObjects.Clear();
+                this.canvas.Invalidate();
+            }
         }
 
         private void cbxdrawingstyle_SelectedIndexChanged(object sender, EventArgs e)
@@ -521,5 +559,41 @@ namespace Painapp
             }
         }
 
+        private void btn_group_Click(object sender, EventArgs e)
+        {
+            if (selectedObjects.Count > 1)
+            {
+                var group = new clsComplexobject();
+                foreach (var obj in selectedObjects)
+                {
+                    lstObject.RemoveObject(obj);
+                    obj.isSelected = false;
+                    group.AddObject(obj);
+                }
+                lstObject.AddObject(group);
+                selectedObjects.Clear();
+                group.isSelected = true;
+                selectedObjects.Add(group);
+                this.canvas.Invalidate();
+            }
+        }
+
+        private void btn_ungroup_Click(object sender, EventArgs e)
+        {
+            if (selectedObjects.Count == 1 && selectedObjects[0] is clsComplexobject group)
+            {
+                var children = group.GetObjects().ToList();
+                lstObject.RemoveObject(group);
+                group.isSelected = false;
+                selectedObjects.Clear();
+                foreach (var obj in children)
+                {
+                    lstObject.AddObject(obj);
+                    obj.isSelected = true;
+                    selectedObjects.Add(obj);
+                }
+                this.canvas.Invalidate();
+            }
+        }
     }
 }
